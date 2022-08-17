@@ -15,7 +15,7 @@ softShadows()
 
 
 
-const HINT_PHRASE = ""
+const HINT_PHRASE = "За колонку подойди и подарочек найди 🎁"
 //14 words
 const birthdayText = "Happy birthday to you Ivan I wish you good luck in new school 1502"
 const word_list = birthdayText.split(" ").reverse()
