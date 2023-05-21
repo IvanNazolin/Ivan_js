@@ -17,7 +17,7 @@ softShadows()
 
 const HINT_PHRASE = "Удачи на соревнованиях"
 //14 words
-const birthdayText = "Ника ты самая прекрасная and best girl what I have ever known"
+const birthdayText = "Nika you are the most beautiful and the best girl I have ever known."
 
 const word_list = birthdayText.split(" ").reverse()
 
@@ -77,7 +77,7 @@ function Heart(props) {
           metalness={0.3}
         />
       </mesh>
-      <LoveText rotation={[-Math.PI/2, group.current ? group.current.rotation.z : 0, -Math.PI]} position={[0, 0, 25]} fontSize={7}>Good luck, Nika!</LoveText>
+      <LoveText rotation={[-Math.PI/2, group.current ? group.current.rotation.z : 0, -Math.PI]} position={[0, 0, 25]} fontSize={7}>Good luck, Nika! And have a good summer!</LoveText>
     </group>
   )
 }
