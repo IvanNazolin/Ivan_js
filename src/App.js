@@ -17,7 +17,7 @@ softShadows()
 
 const HINT_PHRASE = "Удачи на соревнованиях"
 //14 words
-const birthdayText = "known. ever have I which girl best the and awesome most the are you ****,"
+const birthdayText = "known. ever have I which girl best the and awesome most the are you Nika,"
 
 
 const word_list = birthdayText.split(" ").reverse()
