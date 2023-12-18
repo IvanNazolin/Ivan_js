@@ -178,32 +178,40 @@ function App() {
   const radius = 3600
   const [animationFinished, setAnimationFinished] = useState(false)
 
-
   return (
-    <Canvas ref={canvasRef} camera={{ fov: 75, near: 0.1, far: 8000, position: [9, 0, 5] }} style={{ height: "100vh" }}
-      shadows
-      
-      onCreated={({ gl, scene }) => {
-
+    <Canvas ref={canvasRef} camera={{ fov: 75, near: 0.1, far: 8000, position: [9, 0, 5] }} style={{ height: "100vh" }} shadows onCreated={({ gl, scene }) => {
         scene.background = new THREE.Color('#000000')
       }}>
-
       <Stars />
-
-
-        <MyLight/>
-        <ambientLight intensity={0.3}/>
-      
-      
-
-      <OrbitControls enabled={animationFinished} maxPolarAngle={Math.PI/2} minPolarAngle={Math.PI/2} enablePan={false}/>
 
       <Suspense fallback={null}><Heart setAnimationFinished={setAnimationFinished} animationFinished={animationFinished}/></Suspense>
       
-      <Cloud count={15} radius={40} /> 
+      {/* Добавляем источники света */}
+      <ambientLight intensity={0.3}/>
+      <MyLight position={[10, 15, 10]} angle={0.3} intensity={0.5} color="white" />
+      <MyLight position={[-10, -15, -10]} angle={0.3} intensity={0.5} color="red" />
 
+      <OrbitControls enabled={animationFinished} maxPolarAngle={Math.PI/2} minPolarAngle={Math.PI/2} enablePan={false}/>
+      
+      <Cloud count={15} radius={40} /> 
     </Canvas>
   );
 }
+
+// Добавим цвет света для источника
+function MyLight({ position, angle, intensity, color }) {
+  const lightRef = useRef()
+  
+  return (
+    <spotLight position={position} angle={angle} intensity={intensity} color={color}
+      castShadow
+      shadowMapWidth={1024}
+      shadowMapHeight={1024}
+      ref={lightRef}
+    />
+  )
+}
+
+
 
 export default App;
