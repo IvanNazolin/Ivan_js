@@ -7,8 +7,6 @@ import * as THREE from "three";
 import { useSpring } from "react-spring";
 import { useBox } from "use-cannon"
 
-// ... (ваш другой импорт)
-
 const HINT_PHRASE = "Удачи на соревнованиях"
 const birthdayText = "known. ever have I which girl best the and awesome most the are you Nika,"
 
@@ -73,7 +71,7 @@ function LoveText({ rotation, children, fontSize, maxWidth, lineHeight, textAlig
   useEffect(() => {
     textref.current.rotation.x = rotation[0]
     textref.current.rotation.y = rotation[1]
-    textref.current.rotation.z = rotation[2]
+    textref.current.rotation.z = rotation[2];
 
     textref.current.position.x = position[0]
     textref.current.position.y = position[1]
@@ -103,11 +101,46 @@ function MyLight({ position, angle, intensity, color }) {
 }
 
 function Word({ children, ...props }) {
-  // ... (ваш компонент Word)
+  const color = new THREE.Color()
+  const fontProps = { font: '/font.woff', fontSize: 3.5, letterSpacing: -0.05, lineHeight: 1, 'material-toneMapped': false }
+  const ref = useRef()
+  const [hovered, setHovered] = useState(false)
+  const over = (e) => (e.stopPropagation(), setHovered(true))
+  const out = () => setHovered(false)
+
+  useEffect(() => {
+    if (hovered) document.body.style.cursor = 'pointer'
+    return () => (document.body.style.cursor = 'auto')
+  }, [hovered])
+
+  useFrame(({ camera }) => {
+    ref.current.quaternion.copy(camera.quaternion)
+    ref.current.material.color.lerp(color.set(hovered ? '#fa2720' : '#0294f5'), 0.1)
+  })
+
+  function handleClick() {
+    if (children === "Happy" && props.index === 97) {
+      Swal.fire("Ураааа!", `${HINT_PHRASE}`, "success")
+    }
+  }
+
+  return (
+    <Text ref={ref} onPointerOver={over} onPointerOut={out} onPointerDown={handleClick} {...props} {...fontProps} children={children}/>
+  )
 }
 
 function Cloud({ count = 10, radius = 20 }) {
-  // ... (ваш компонент Cloud)
+  const words = useMemo(() => {
+    const temp = []
+    const spherical = new THREE.Spherical()
+    const phiSpan = Math.PI / (count + 1)
+    const thetaSpan = (Math.PI * 2) / count
+    for (let i = 1; i < count + 1; i++)
+      for (let j = 0; j < count; j++) temp.push([new THREE.Vector3().setFromSpherical(spherical.set(radius, phiSpan * i, thetaSpan * j)), word_list[j]])
+    return temp
+  }, [count, radius])
+
+  return words.map(([pos, word], index) => <Word key={index} position={pos} children={word} index={index}/>)
 }
 
 function App() {
